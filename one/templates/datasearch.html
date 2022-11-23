@@ -1,0 +1,101 @@
+{% extends 'layerout.html' %}
+{% block content %}
+<!--表格标题-->
+<div style="margin: auto;text-align: center">
+	<h1 style="font-family: 'Times New Roman'">Binance Coin Data</h1>
+</div>
+
+<div class="clearfix" style="text-align: center;margin: auto;display: flex;justify-content: center;align-items: center">
+
+	<div>
+		<label for="name"></label>
+		<input type="text" id="name" name="name">
+		<button onclick="checkinfo()">Name</button>
+	</div>
+
+	<div>
+		<label for="change1m"></label>
+		<input type="text" id="change1m" name="change1m">
+		<button onclick="checkinfo()">1&nbsp;m</button>
+	</div>
+
+
+	<div>
+		<label for="change5m"></label>
+		<input type="text" id="change5m" name="change5m">
+		<button onclick="checkinfo()">5&nbsp;m</button>
+	</div>
+
+
+
+	<div>
+		<label for="change15m"></label>
+		<input type="text" id="change15m" name="change15m">
+		<button onclick="checkinfo()">15m</button>
+	</div>
+
+
+	<div>
+		<label for="change30m"></label>
+		<input type="text" id="change30m" name="change30m">
+		<button onclick="checkinfo()">30m</button>
+	</div>
+</div><br>
+<!--表格区域-->
+<div style="margin: auto; text-align: center;">
+	<table id="tb" style="margin: auto;width: auto; line-height: 40px;font-family: 'Times New Roman';font-size: 20px;text-align: center;">
+		<thead>
+		<tr>
+			<th>Id</th>
+			<th>coin_pairs</th>
+			<th>coin_pairs_temp</th>
+			<th>coin_price</th>
+			<th>change_1m</th>
+			<th>change_5m</th>
+			<th>change_15m</th>
+			<th>change_30m</th>
+		</tr>
+		</thead>
+		<tbody id="body">
+		</tbody>
+	</table>
+</div>
+	{% endblock %}
+	{% block script %}
+<script>
+    //javascript
+    //执行插入
+    setInterval("checkinfo()",1000)
+    function checkinfo() {
+        $.ajax({
+            type: 'POST',
+            url: '/data_post/',
+            data: {
+                "coin":$("input[name='name']").val(),
+                "_1m":$("input[name='change1m']").val(),
+                "_5m":$("input[name='change5m']").val(),
+                "_15m":$("input[name='change15m']").val(),
+                "_30m":$("input[name='change30m']").val(),
+            },
+            success: function (res) {
+                //清空表格内容
+                $("#tb  tr:not(:first)").empty("");
+                //创建内容
+                for (let item in res["data"]) {
+                    let tr = document.createElement('tr')
+                    for (let key in res["data"][item]) {
+                        let text_ = res["data"][item][key]
+                        let td = document.createElement('td')
+                        td.innerText = text_
+                        tr.appendChild(td)
+                    }
+                    let p_tr = document.getElementById('body')
+                    p_tr.appendChild(tr)
+                }
+            }
+        })
+    }
+	//loop
+
+</script>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'layerout.html' %}
+
+
+{% block content %}
+	<!--Tittle-->
+	<div style="text-align: center; margin: 50px auto"><h1>公告中心</h1></div>
+	<!--Binance-->
+	<div style="background-color: darkgray; width: 45%;height: 800px;float: left;border: red;margin:0 10px auto 30px">
+		<h2 style="text-align: center">Binance</h2>
+		<ul id="binance_nonce"></ul>
+	</div>
+	<div style="background-color: darkgray; width: 45%;height: 800px;float: right;border: red;margin:0 30px auto 10px">
+		<h2 style="text-align: center">OKX</h2>
+		<ul id="okx_nonce"></ul>
+	</div>
+
+	<script>
+        // 获取li内容函数
+        function get_li(res) {
+            let li_b = document.getElementById(res).getElementsByTagName("li");
+            let li_list = new Array()
+            for (let i = 0; i < li_b.length; i++) {
+                li_list.push(li_b[i].innerText)
+            }
+            return li_list;
+        }
+
+        setInterval("getdata()", 1000)
+
+        function getdata() {
+            let temp_binance = get_li("binance_nonce")
+            let temp_okx = get_li("okx_nonce")
+
+            $.ajax({
+                type: 'POST',
+                url: '/news/',
+                data: {
+                    name: 'test'
+                },
+                success: function (res) {
+                    // Binance
+                    for (let item in res["Binance"]) {
+                        let li_text = res["Binance"][item]["content"]
+                        let li_link = res["Binance"][item]["link"]
+                        if (temp_binance.includes(li_text)) {
+                            //pass
+                        } else {
+                            let _li = document.createElement('li')
+                            let a = document.createElement('a')
+                            a.href = li_link
+                            a.innerText = li_text
+                            _li.appendChild(a)
+                            let ul = document.getElementById("binance_nonce")
+                            ul.insertBefore(_li,ul.childNodes[0])
+                        }
+                    }
+                    //Okx
+                    for (let item in res["OKX"]) {
+                        let li_text = res["OKX"][item]["content"]
+                        let li_link = res["OKX"][item]["link"]
+                        if (temp_okx.includes(li_text)) {
+                            //pass
+                        } else {
+                            let _li = document.createElement('li')
+                            let a = document.createElement('a')
+                            a.href = li_link
+                            a.innerText = li_text
+                            _li.appendChild(a)
+                            let ul = document.getElementById("okx_nonce")
+	                        ul.insertBefore(_li,ul.childNodes[0])
+                        }
+                    }
+                }
+            })
+        }
+	</script>
+{% endblock %}

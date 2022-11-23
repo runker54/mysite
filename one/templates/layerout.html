@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Service</title>
+	<link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.css' %}">
+	<style>
+        table, td, th, tr, td {
+            border: 2px solid darkgray;
+        }
+        input{
+	        width: 80px;
+        }
+        {% block style_css %}{% endblock %}
+	</style>
+</head>
+<body>
+<!-- 定义导航栏 -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<div class="container">
+
+		<!-- 导航栏商标 -->
+		<a class="navbar-brand" href="{% url 'navigation' %}">Data View</a>
+		<!-- 导航入口 -->
+		<div>
+			<ul class="navbar-nav">
+				<!-- 条目 -->
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'search' %}">Binance</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'search' %}">Analysis</a>
+				</li>
+
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'news' %}">Spider</a>
+				</li>
+
+			</ul>
+		</div>
+	</div>
+</nav>
+
+{% block content %}{% endblock %}
+
+<!-- 页尾 -->
+<div>
+	<br><br><br>
+</div>
+<footer class="py-3 bg-dark fixed-bottom">
+	<div class="container">
+		<p class="m-0 text-center text-white">Copyright &copy; www.runker54.top 2022</p>
+	</div>
+</footer>
+<script src="{% static 'plugins/jquery/jquery.js' %}"></script>
+
+{% block script %}{% endblock %}
+</body>
+</html>

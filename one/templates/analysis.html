@@ -1,0 +1,87 @@
+{% extends 'layerout.html' %}
+<h1>loading...</h1>
+
+{% block content %}
+<div style="margin: auto;text-align: center">
+	<h1 style="font-family: 'Times New Roman'">Coin Data</h1>
+</div>
+<div style="margin: auto; text-align: center;">
+	<table id="tb" style="margin: auto;width: auto; line-height: 40px;font-family: 'Times New Roman';font-size: 20px;text-align: center;">
+		<thead>
+		<tr>
+			<th>Coin_pairs</th>
+			<th>Binance</th>
+			<th>OKX</th>
+			<th>Huobi</th>
+			<th>Chain</th>
+			<th>Price Diff</th>
+			<th>Percentage</th>
+		</tr>
+		</thead>
+		<tbody id="body">
+		</tbody>
+	</table>
+</div>
+{% endblock %}
+
+
+{% block script %}
+	<script>
+	//javascript
+	// 构建列表
+	function generate_list(){
+        $.ajax({
+	        type:'POST',
+	        url:'/analysis/',
+	        success:function (res){
+                let list_coin = res["coin_list"]
+		        let cex_price = res["data"]
+		        let p_tr = document.getElementById('body')
+				for (let one_coin in list_coin){
+                    let _coin_name = list_coin[one_coin]
+                    let tr = document.createElement('tr')
+					let ts = document.createElement('td')
+					ts.innerText = _coin_name
+					ts.id = _coin_name
+					tr.appendChild(ts)
+					// cex message
+					let cp_data = cex_price[_coin_name]
+					for (let one_el in cp_data){
+						let cex_price = cp_data[one_el]
+						let td = document.createElement('td')
+						td.id = _coin_name+one_el
+						td.innerText = cex_price
+						tr.appendChild(td)
+					}
+					p_tr.appendChild(tr)
+				}
+            }
+        })
+	}
+    $(generate_list)
+
+	// 写入数据
+		setInterval(write_data,10000)
+		function write_data(){
+        $.ajax({
+	        type:'POST',
+	        url:'/analysis/',
+	        success:function (res){
+		        let cex_price = res["data"]
+		        // coin_name
+				for (let one_el in cex_price){
+					// cex_name
+					for (let one_cex in cex_price[one_el]){
+                        // price
+						let _price = cex_price[one_el][one_cex]
+						let _id = one_el+one_cex
+						let td = document.getElementById(_id)
+						td.innerText=_price
+					}
+				}
+            }
+        })
+	}
+	</script>
+{% endblock %}
+

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Service</title>
-	<link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.css' %}">
+	<link href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 	<style>
         table, td, th, tr, td {
             border: 2px solid darkgray;
@@ -30,7 +30,7 @@
 					<a class="nav-link" href="{% url 'search' %}">Binance</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="{% url 'search' %}">Analysis</a>
+					<a class="nav-link" href="{% url 'analysis' %}">Analysis</a>
 				</li>
 
 				<li class="nav-item">
@@ -53,6 +53,7 @@
 		<p class="m-0 text-center text-white">Copyright &copy; www.runker54.top 2022</p>
 	</div>
 </footer>
+<script src="{% static 'plugins/bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'plugins/jquery/jquery.js' %}"></script>
 
 {% block script %}{% endblock %}

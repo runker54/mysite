@@ -86,3 +86,27 @@ class Spider(models.Model):
     def __str__(self):
         # 文本主要内容
         return self.content
+
+
+# chain链上交易对
+class CharinPairs(models.Model):
+    # coin pairs
+    coin_pairs = models.CharField(max_length=255)
+    # chain id
+    chain_id = models.CharField(max_length=255)
+    # dex id
+    dex_id = models.CharField(max_length=255)
+    # pair Address
+    pair_address = models.CharField(max_length=255)
+    # labels
+    labels = models.CharField(max_length=255, null=True)
+    # name
+    name = models.CharField(max_length=255, null=True)
+    # symbol
+    symbol = models.CharField(max_length=255, null=True)
+    # price
+    price = models.FloatField(blank=True, null=True)
+
+    def __str__(self):
+        # 回显内容
+        return self.coin_pairs
